@@ -26,7 +26,9 @@ public:
     void setFile(const char *filename); 
     // void readFile();
     void getRecipe(const char *name); 
-    char* getString(unsigned int position, char delimiter); 
+    char* bufferString(unsigned int position, char delimiter); 
+
+    void lex(unsigned int *position); 
 };
 
 #endif

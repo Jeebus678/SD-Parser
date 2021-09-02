@@ -24,7 +24,7 @@ void setup()
     // read.readFile("RECIPES.TXT");
     read.setFile("RECIPES.TXT"); 
     read.getRecipe("Bellini");
-    // read.getString(118, '{');
+    read.bufferString(118, '}');
 }
 
 void loop()

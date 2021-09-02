@@ -59,9 +59,9 @@ void reader::getRecipe(const char *name) // Retrieve a cocktail's recipe string
             if (readByte == newLine) // Stop at every new line
             {
                 pos = file.position();
-                getString(pos + 1, newArray);
+                bufferString(pos + 1, newArray);
                 if(strcmp(buffer, name)==0){ // Does the name parameter match the buffer string?
-                    getString(pos + 1, endLine); // If it does, save the drink to the buffer
+                    bufferString(pos + 1, endLine); // If it does, save the drink to the buffer
                     Serial.println(buffer);
                 }
             }
@@ -71,7 +71,7 @@ void reader::getRecipe(const char *name) // Retrieve a cocktail's recipe string
         Serial.println("Error: Failed to open file.");
 }
 
-char* reader::getString(unsigned int position, char delimiter) // Get any string from a starting position until a specified delimiter
+char* reader::bufferString(unsigned int position, char delimiter) // Get any string from a starting position until a specified delimiter
 {
     clearBuffer(); 
     file.seek(position + 1);
@@ -88,3 +88,6 @@ char* reader::getString(unsigned int position, char delimiter) // Get any string
     }
 }
 
+void reader::lex(unsigned int *position){
+    bufferString(*position, '}'); 
+}
