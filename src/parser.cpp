@@ -4,20 +4,20 @@
 #include <string.h>
 using namespace std;
 
-void reader::clearBuffer()
+void parser::clearBuffer()
 {
-    for (unsigned int erase = 0;erase<sizeof(buffer); erase++)
+    for (unsigned int erase = 0; erase < sizeof(buffer); erase++)
     {
-       buffer[erase] = '\0';
+        buffer[erase] = '\0';
     }
 }
 
-void reader::setFile(const char *filename)
+void parser::setFile(const char *filename)
 {
     file = SD.open(filename, FILE_READ);
 }
 
-// void reader::readFile()
+// void parser::readFile()
 // {
 //     if (file)
 //     {
@@ -46,9 +46,9 @@ void reader::setFile(const char *filename)
 //         Serial.println("Error: Failed to open file.");
 // }
 
-void reader::getRecipe(const char *name) // Retrieve a cocktail's recipe string
+void parser::getRecipe(const char *name) // Retrieve a cocktail's recipe string
 {
-    if (file) 
+    if (file)
     {
         fileSize = file.size();
         pos = 0;
@@ -60,9 +60,10 @@ void reader::getRecipe(const char *name) // Retrieve a cocktail's recipe string
             {
                 pos = file.position();
                 bufferString(pos + 1, newArray);
-                if(strcmp(buffer, name)==0){ // Does the name parameter match the buffer string?
+                if (strcmp(buffer, name) == 0)
+                {                                   // Does the name parameter match the buffer string?
                     bufferString(pos + 1, endLine); // If it does, save the drink to the buffer
-                    Serial.println(buffer);
+                    break;
                 }
             }
         }
@@ -71,9 +72,9 @@ void reader::getRecipe(const char *name) // Retrieve a cocktail's recipe string
         Serial.println("Error: Failed to open file.");
 }
 
-char* reader::bufferString(unsigned int position, char delimiter) // Get any string from a starting position until a specified delimiter
+char *parser::bufferString(unsigned int position, char delimiter) // Get any string from a starting position until a specified delimiter
 {
-    clearBuffer(); 
+    clearBuffer();
     file.seek(position + 1);
     for (unsigned int n = file.position();; n++) // Iterate forward infinitely
     {
@@ -88,6 +89,41 @@ char* reader::bufferString(unsigned int position, char delimiter) // Get any str
     }
 }
 
-void reader::lex(unsigned int *position){
-    bufferString(*position, '}'); 
+void parser::lex()
+{
+    // typedef struct
+    // {
+    //     char liquor[30];
+    //     uint8_t portion;
+    // } Ingridient;
+
+    // typedef struct
+    // {
+    //     char name[30];
+    //     Ingridient ingridients[7];
+    // } Cocktail;
+    // uint8_t recipeLayer = 0;
+    // boolean name = true;
+    // boolean ingr = false;
+    // boolean portn = false;
+    getRecipe("Aviation");
+    Serial.println(buffer);
+    for (unsigned int i = 0; i < sizeof(buffer); i++)
+    {
+        switch(buffer[i]){
+            case ('{'):{
+                ;
+            }
+        }
+    }
+
+    Serial.println(cocktail.name);
+    for (unsigned int i = 0; i < sizeof(cocktail.ingridients); i++)
+    {
+        if (cocktail.ingridients[i].portion != NULL)
+        {
+            Serial.println(cocktail.ingridients[i].liquor);
+            Serial.println(cocktail.ingridients[i].portion);
+        }
+    }
 }

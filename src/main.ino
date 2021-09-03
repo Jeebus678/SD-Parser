@@ -7,7 +7,7 @@
 
 const uint8_t chipSelect = 10;
 
-reader read;
+parser Parser;
 
 void setup()
 {
@@ -21,10 +21,11 @@ void setup()
         Serial.println("Card failed, or not present");
         return;
     }
-    // read.readFile("RECIPES.TXT");
-    read.setFile("RECIPES.TXT"); 
-    read.getRecipe("Bellini");
-    read.bufferString(118, '}');
+    // Parser.ParserFile("RECIPES.TXT");
+    Parser.setFile("RECIPES.TXT"); 
+    // Parser.getRecipe("Bellini");
+    // Parser.bufferString(118, '}');
+    Parser.lex(); 
 }
 
 void loop()

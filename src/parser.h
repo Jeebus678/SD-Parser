@@ -6,29 +6,41 @@
 // FILE FORMAT:
 // $name{x1, y1; x2, y2}
 
-class reader
+class parser
 {
 public:
-    // Delimiters below 
-    char newArray = '{'; 
-    char newElement = ';';
-    char divider = ','; 
-    char endLine = '}';
-    char newLine = '$';
+    typedef struct Ingridient
+    {
+        char liquor[30];
+        uint8_t portion;
+    } Ingridient;
 
+    struct Drink
+    {
+        char name[30];
+        Ingridient ingridients[8];
+    };
+
+    // Definitions (Delimiters below)
     File file;
+    Drink cocktail;
     unsigned int fileSize;
-    unsigned int pos = 0; 
+    unsigned int pos = 0;
     char buffer[100];
-    char readByte; 
-    
-    void clearBuffer(); 
-    void setFile(const char *filename); 
-    // void readFile();
-    void getRecipe(const char *name); 
-    char* bufferString(unsigned int position, char delimiter); 
+    char readByte;
+    const char newArray = '{';
+    const char newElement = ';';
+    const char divider = ',';
+    const char endLine = '}';
+    const char newLine = '$';
 
-    void lex(unsigned int *position); 
+    void clearBuffer();
+    void setFile(const char *filename);
+    // void readFile();
+    void getRecipe(const char *name);
+    char *bufferString(unsigned int position, char delimiter);
+
+    void lex();
 };
 
 #endif
