@@ -1,3 +1,12 @@
+// Basic SD card parser
+// 
+// Function Architechture: 
+// Once the parse() function is called it passes the name parameter to
+// getRecipe(). It scans through the file, looking for an item with a 
+// matching name (so $_name_ for example). getRecipe() also calls on 
+// bufferString() multiple times, which reads starting from a position 
+// until a delimiter from the SD card.  
+
 #include <parser.h>
 #include <SD.h>
 #include <stdio.h>
@@ -67,27 +76,27 @@ void parser::parse(char *name)
     getRecipe(name);  // Stores input name into buffer
     for (p = strtok(buffer, "{,;"); p != NULL; p = strtok(NULL, "{,;"))
     {
-        if (recipeString == false)
+        if (recipeString == false) // If name is not read
         {
-            strcpy(cocktail.name, p);
+            strcpy(cocktail.name, p); 
             recipeString = true;
         }
-        else if (recipeString == true)
+        else if (recipeString == true) // If name is read
         {
-            if ((iter % 2) == 0)
+            if ((iter % 2) == 0) // Evens are liquor names
             {
                 strcpy(cocktail.ingridients[n].liquor, p);
                 iter++;
             }
-            else if ((iter % 2) == 1)
+            else if ((iter % 2) == 1) // Odds are portion sizes
             {
                 strcpy(cocktail.ingridients[n].portion, p);
                 iter++;
-                n++;
+                n++; // Iterate through ingridients[8]
             }
         }
     }
-    // Uncomment part below for troubleshooting
+    // Used for troubleshooting- comment out when not needed
     Serial.println(cocktail.name);
     for (int i = 0; i < 8; i++)
     {

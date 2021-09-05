@@ -1,3 +1,11 @@
+These are test drink options bellow. 
+Syntax works as follows:
+
+$name{x1, y1; x2, y2; z1, z2}
+
+
+
+
 $Americano{Campari,0;red vermouth,0;soda water,0}
 $Aviation{gin,0;cherry liqueur,0;creme de violette,0;lemon juice,0}
 $B52 Cocktail{kahlua,0;baileys irish cream,0;grand marnier,0}

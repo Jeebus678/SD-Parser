@@ -3,12 +3,10 @@
 #include <SD.h>
 #include <stdio.h>
 
-// FILE FORMAT:
-// $name{x1, y1; x2, y2; z1, z2}
-
 class parser
 {
 public:
+    // Struct for storing SD variables
     typedef struct Ingridient
     {
         char liquor[30];
@@ -21,7 +19,7 @@ public:
         Ingridient ingridients[8];
     };
 
-    // Definitions (Delimiters below)
+    // Definitions (delimiters below)
     File file;
     Drink cocktail;
     unsigned int fileSize;
@@ -34,6 +32,7 @@ public:
     const char endLine = '}';
     const char newLine = '$';
 
+    // Functions 
     void clearBuffer();
     void setFile(const char *filename);
     void getRecipe(const char *name);
