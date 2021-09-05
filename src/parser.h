@@ -1,10 +1,10 @@
 #ifndef PARSER_H_
 #define PARSER_H_
-
 #include <SD.h>
+#include <stdio.h>
 
 // FILE FORMAT:
-// $name{x1, y1; x2, y2}
+// $name{x1, y1; x2, y2; z1, z2}
 
 class parser
 {
@@ -12,7 +12,7 @@ public:
     typedef struct Ingridient
     {
         char liquor[30];
-        uint8_t portion;
+        char portion[2];
     } Ingridient;
 
     struct Drink
@@ -36,11 +36,9 @@ public:
 
     void clearBuffer();
     void setFile(const char *filename);
-    // void readFile();
     void getRecipe(const char *name);
     char *bufferString(unsigned int position, char delimiter);
-
-    void lex();
+    void parse(char *name);
 };
 
 #endif

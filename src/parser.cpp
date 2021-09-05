@@ -1,8 +1,6 @@
 #include <parser.h>
 #include <SD.h>
 #include <stdio.h>
-#include <string.h>
-using namespace std;
 
 void parser::clearBuffer()
 {
@@ -16,35 +14,6 @@ void parser::setFile(const char *filename)
 {
     file = SD.open(filename, FILE_READ);
 }
-
-// void parser::readFile()
-// {
-//     if (file)
-//     {
-//         fileSize = file.size();
-//         while (file.available())
-//         {
-//             file.seek(pos);
-//             readByte = file.peek();
-//             if (readByte == newLine)
-//             {
-//                 for (unsigned int i = pos; i < fileSize; i++)
-//                 {
-//                     file.seek(i);
-//                     readByte = file.peek();
-//                     Serial.println(readByte);
-//                     if (readByte == endLine)
-//                     {
-//                         Serial.println();
-//                         pos = file.position() + 1;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-//     else
-//         Serial.println("Error: Failed to open file.");
-// }
 
 void parser::getRecipe(const char *name) // Retrieve a cocktail's recipe string
 {
@@ -89,41 +58,40 @@ char *parser::bufferString(unsigned int position, char delimiter) // Get any str
     }
 }
 
-void parser::lex()
+void parser::parse(char *name)
 {
-    // typedef struct
-    // {
-    //     char liquor[30];
-    //     uint8_t portion;
-    // } Ingridient;
-
-    // typedef struct
-    // {
-    //     char name[30];
-    //     Ingridient ingridients[7];
-    // } Cocktail;
-    // uint8_t recipeLayer = 0;
-    // boolean name = true;
-    // boolean ingr = false;
-    // boolean portn = false;
-    getRecipe("Aviation");
-    Serial.println(buffer);
-    for (unsigned int i = 0; i < sizeof(buffer); i++)
+    char *p;
+    uint8_t n = 0;
+    uint8_t iter = 0;
+    boolean recipeString = false;
+    getRecipe(name);  // Stores input name into buffer
+    for (p = strtok(buffer, "{,;"); p != NULL; p = strtok(NULL, "{,;"))
     {
-        switch(buffer[i]){
-            case ('{'):{
-                ;
+        if (recipeString == false)
+        {
+            strcpy(cocktail.name, p);
+            recipeString = true;
+        }
+        else if (recipeString == true)
+        {
+            if ((iter % 2) == 0)
+            {
+                strcpy(cocktail.ingridients[n].liquor, p);
+                iter++;
+            }
+            else if ((iter % 2) == 1)
+            {
+                strcpy(cocktail.ingridients[n].portion, p);
+                iter++;
+                n++;
             }
         }
     }
-
+    // Uncomment part below for troubleshooting
     Serial.println(cocktail.name);
-    for (unsigned int i = 0; i < sizeof(cocktail.ingridients); i++)
+    for (int i = 0; i < 8; i++)
     {
-        if (cocktail.ingridients[i].portion != NULL)
-        {
-            Serial.println(cocktail.ingridients[i].liquor);
-            Serial.println(cocktail.ingridients[i].portion);
-        }
+        Serial.println(cocktail.ingridients[i].liquor);
+        Serial.println(cocktail.ingridients[i].portion);
     }
 }

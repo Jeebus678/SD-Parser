@@ -8,6 +8,7 @@
 const uint8_t chipSelect = 10;
 
 parser Parser;
+char* buffer = "Aviation";
 
 void setup()
 {
@@ -23,9 +24,7 @@ void setup()
     }
     // Parser.ParserFile("RECIPES.TXT");
     Parser.setFile("RECIPES.TXT"); 
-    // Parser.getRecipe("Bellini");
-    // Parser.bufferString(118, '}');
-    Parser.lex(); 
+    Parser.parse(buffer);
 }
 
 void loop()
